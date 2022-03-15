@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'menu_page.dart';
+import 'register_page.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -8,7 +11,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  String login = '';
+  String username = '';
   String password = '';
 
   @override
@@ -24,9 +27,9 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextField(
-                  onChanged: (text) { login = text; },
+                  onChanged: (text) { username = text; },
                   decoration: InputDecoration(
-                    labelText: 'Login',
+                    labelText: 'Usuário',
                     border: OutlineInputBorder()
                   ),
                 ),
@@ -35,17 +38,34 @@ class _LoginPageState extends State<LoginPage> {
                   onChanged: (text) { password = text; },
                   obscureText: true,
                   decoration: InputDecoration(
-                      labelText: 'Password',
+                      labelText: 'Senha',
                       border: OutlineInputBorder()
                   ),
                 ),
                 SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () {
-
-                  },
-                  child: Text('Entrar'),
-                )
+                SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(builder: (context) => MenuPage())
+                        );
+                      },
+                      child: Text('Entrar'),
+                    )
+                ),
+                SizedBox(height: 10),
+                SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(builder: (context) => RegisterPage())
+                        );
+                      },
+                      child: Text('Cadastrar'),
+                    )
+                ),
               ],
             )
           )
