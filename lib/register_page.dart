@@ -56,13 +56,35 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     SizedBox(height: 10),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (context) => LoginPage())
-                        );
-                      },
-                      child: Text('Cadastrar'),
+                    Row(
+                        children: [
+                          Expanded(
+                            flex: 50,
+                            child: SizedBox(
+                              height: 50,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.of(context).pushNamed('/login');
+                                },
+                                child: Text('Voltar', style: TextStyle(fontSize: 20)),
+                                style: ElevatedButton.styleFrom( primary: Colors.grey ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          Expanded(
+                            flex: 50,
+                            child: SizedBox(
+                              height: 50,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.of(context).pushNamed('/login');
+                                },
+                                child: Text('Cadastrar', style: TextStyle(fontSize: 20)),
+                              ),
+                            ),
+                          ),
+                        ]
                     ),
                   ],
                 )

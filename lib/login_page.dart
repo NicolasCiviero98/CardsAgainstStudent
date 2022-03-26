@@ -26,6 +26,11 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Container(
+                  width: 200,
+                  height: 200,
+                  child: Image.asset('assets/images/logo_test.png'),
+                ),
                 TextField(
                   onChanged: (text) { username = text; },
                   decoration: InputDecoration(
@@ -47,9 +52,7 @@ class _LoginPageState extends State<LoginPage> {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (context) => MenuPage())
-                        );
+                        Navigator.of(context).pushNamed('/menu');
                       },
                       child: Text('Entrar'),
                     )
@@ -59,9 +62,7 @@ class _LoginPageState extends State<LoginPage> {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (context) => RegisterPage())
-                        );
+                        Navigator.of(context).pushNamed('/register');
                       },
                       child: Text('Cadastrar'),
                     )

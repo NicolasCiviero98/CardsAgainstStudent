@@ -1,4 +1,5 @@
 import 'package:cards_against_student/login_page.dart';
+import 'package:cards_against_student/new_match_page.dart';
 import 'package:flutter/material.dart';
 
 class MenuPage extends StatefulWidget {
@@ -24,7 +25,7 @@ class _MenuPageState extends State<MenuPage> {
                       width: double.infinity,
                       child:   ElevatedButton(
                         onPressed: () {
-                          print('not implemented');
+                          Navigator.of(context).pushNamed('/new_match');
                         },
                         child: Text('Criar sala'),
                       ),
@@ -34,7 +35,7 @@ class _MenuPageState extends State<MenuPage> {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          print('not implemented');
+                          Navigator.of(context).pushNamed('/statistics');
                         },
                         child: Text('Estatísticas'),
                       ),
@@ -44,7 +45,7 @@ class _MenuPageState extends State<MenuPage> {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          print('not implemented');
+                          Navigator.of(context).pushNamed('/edit_cards');
                         },
                         child: Text('Editar cartas'),
                       ),
@@ -54,9 +55,7 @@ class _MenuPageState extends State<MenuPage> {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(builder: (context) => LoginPage())
-                          );
+                          Navigator.of(context).pushNamed('/login');
                         },
                         child: Text('Deslogar'),
                       ),
@@ -69,3 +68,4 @@ class _MenuPageState extends State<MenuPage> {
     );
   }
 }
+
