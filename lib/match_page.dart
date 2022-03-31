@@ -8,8 +8,30 @@ class MatchPage extends StatefulWidget {
 }
 
 class _MatchPageState extends State<MatchPage> {
+  List<Widget> cards = [];
+  int index = 0;
+  final cardView = PageController();
+
   @override
   Widget build(BuildContext context) {
+    if (cards.isEmpty){
+      for (int i = 0; i < 5; i++){
+        cards.add(
+          Container(
+            child: Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: Container(
+                color: Colors.red,
+                child: Center(
+                  child: Text("Carta ${i+1}"),
+                ),
+              ),
+            ),
+          ),
+        );
+      }
+    }
+
     return Material(
         child:SizedBox(
             width: MediaQuery.of(context).size.width,
@@ -41,86 +63,66 @@ class _MatchPageState extends State<MatchPage> {
                     SizedBox(height: 16),
                     Expanded(
                       flex: 1,
-                      child: PageView(
-                        children: [
-                          Container(
-                            child: Padding(
-                              padding: const EdgeInsets.all(32.0),
-                              child: Container(
-                                color: Colors.red,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            child: Padding(
-                              padding: const EdgeInsets.all(32.0),
-                              child: Container(
-                                color: Colors.red,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            child: Padding(
-                              padding: const EdgeInsets.all(32.0),
-                              child: Container(
-                                color: Colors.red,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            child: Padding(
-                              padding: const EdgeInsets.all(32.0),
-                              child: Container(
-                                color: Colors.red,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            child: Padding(
-                              padding: const EdgeInsets.all(32.0),
-                              child: Container(
-                                color: Colors.red,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      child: PageView.builder(
+                          onPageChanged: (int page) {
+                            setState(() {
+                              index = page;
+                            });
+                          },
+                          controller: cardView,
+                          itemCount: cards.length,
+                          itemBuilder: (context,index) {
+                            return cards[index];
+                          }),
                     ),
-
+                    Center(
+                      child: Text('${index+1} of 5'),
+                    ),
                     SizedBox(height: 16),
                     Row(
                         children: [
-                          Expanded(
-                            flex: 50,
-                            child: SizedBox(
-                              height: 50,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  Navigator.of(context).pushNamed('/menu');
-                                },
-                                child: Text('Cancelar', style: TextStyle(fontSize: 20)),
-                                style: ElevatedButton.styleFrom(
-                                  primary: Colors.red,
-                                  onPrimary: Colors.black,
-                                  elevation: 5,
-                                  shadowColor: Colors.amber,
-                                ),
-                              ),
-                            ),
-                          ),
                           SizedBox(width: 8),
-                          Expanded(
-                            flex: 50,
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                index--;
+                                if (index < 0) index = 0;
+                                cardView.animateToPage(index, duration: const Duration( microseconds: 250), curve: Curves.easeInOut);
+                              });
+                            },
                             child: SizedBox(
                               height: 50,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  Navigator.of(context).pushNamed('/match');
-                                },
-                                child: Text('Iniciar', style: TextStyle(fontSize: 20)),
-                              ),
+                              child: Icon(IconData(57490, fontFamily: 'MaterialIcons', matchTextDirection: true)),
+
                             ),
                           ),
+                          Expanded(
+                            flex: 50,
+                            child: SizedBox(),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              print("finaliza jogada");
+                            },
+                            child: Text('Escolher carta!'),
+                          ),
+                          Expanded(
+                            flex: 50,
+                            child: SizedBox(),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              index++;
+                              if (index > 5) index = 5;
+                              cardView.animateToPage(index, duration: const Duration( microseconds: 1000), curve: Curves.linear);
+                            },
+                            child: SizedBox(
+                              height: 50,
+                              child: Icon(IconData(57499, fontFamily: 'MaterialIcons', matchTextDirection: true)),
+                            ),
+                          ),
+
+                          SizedBox(width: 8),
                         ]
                     ),
                   ],
