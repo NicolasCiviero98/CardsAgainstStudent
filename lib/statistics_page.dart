@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
+
+import 'mobile.dart';
+import 'dart:typed_data';
+import 'package:flutter/services.dart' show rootBundle;
 
 class StatisticsPage extends StatefulWidget {
   const StatisticsPage({Key? key}) : super(key: key);
@@ -84,9 +89,9 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                 height: 50,
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    print('not implemented yet');
+                                    createPdf();
                                   },
-                                  child: Text('Compartilhar', style: TextStyle(fontSize: 20)),
+                                  child: Text('Pdf', style: TextStyle(fontSize: 20)),
                                 ),
                               ),
                             ),
@@ -98,5 +103,41 @@ class _StatisticsPageState extends State<StatisticsPage> {
           )
 
       );
+  }
+
+
+  Future<void> createPdf() async {
+    //setup
+    PdfDocument document = PdfDocument();
+    document.pageSettings.margins.all = 0;
+    final page = document.pages.add();
+    PdfGraphics graphics = page.graphics;
+    var font = PdfStandardFont(PdfFontFamily.helvetica, 30);
+
+    //drawing
+    //graphics.drawRectangle(brush: PdfSolidBrush(PdfColor(165, 42, 42)),bounds: Rect.fromLTWH(0, 0, page.getClientSize().width, page.getClientSize().height));
+    double centerX = page.getClientSize().width / 2;
+    graphics.drawImage(PdfBitmap(await _readImageData('Cards3.png')), const Rect.fromLTRB(-30, 50, 180, 260));
+    graphics.drawImage(PdfBitmap(await _readImageData('LogoBlack.png')), Rect.fromLTRB(centerX - 120, 40, centerX + 200, 230));
+    graphics.drawImage(PdfBitmap(await _readImageData('Cards2.png')), Rect.fromLTRB(page.getClientSize().width - 180, page.getClientSize().height - 180, page.getClientSize().width + 40, page.getClientSize().height));
+    double textStart = 300;
+    graphics.drawString("Número de Partidas: $total_matches", font, bounds: Rect.fromLTWH(150, textStart, 0, 0));
+    graphics.drawString("Número de Rodadas: $total_turns", font, bounds: Rect.fromLTWH(150, textStart + 50, 0, 0));
+    graphics.drawString("Partidas ganhas: $win_matches", font, bounds: Rect.fromLTWH(150, textStart + 100, 0, 0));
+    graphics.drawString("Rodadas ganhas: $win_turns", font, bounds: Rect.fromLTWH(150, textStart + 150, 0, 0));
+
+
+
+
+
+    //saving
+    List<int> bytes = document.save();
+    document.dispose();
+    saveAndLaunchFile(bytes, 'Output.pdf');
+  }
+
+  Future<Uint8List> _readImageData(String name) async {
+    final data = await rootBundle.load('assets/images/$name');
+    return data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
   }
 }

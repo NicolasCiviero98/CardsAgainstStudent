@@ -1,5 +1,5 @@
 name: cards_against_student
-description: An academic project developed using flutter based on the card game Cards Against Humanity.
+description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -36,8 +36,12 @@ dependencies:
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
+  path_provider: ^2.0.1
+  open_file: ^3.1.0
   flutter_test:
     sdk: flutter
+  syncfusion_flutter_pdf: ^20.1.47-beta
+  http: ^0.13.0-nullsafety.0
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -59,8 +63,15 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-     - assets/images/logo_test.png
-     - assets/images/hand_with_cards.png
+    - assets/images/LogoBlack.png
+    - assets/images/LogoWhite.png
+    - assets/images/WhiteCard.png
+    - assets/images/BlackCard.png
+    - assets/images/Cards1.jpg
+    - assets/images/Cards2.png
+    - assets/images/Cards3.png
+    - assets/images/Student.png
+    - assets/images/Teacher.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

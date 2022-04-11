@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'menu_page.dart';
 import 'register_page.dart';
+import 'globals.dart' as globals;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -29,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
                 Container(
                   width: 200,
                   height: 200,
-                  child: Image.asset('assets/images/logo_test.png'),
+                  child: Image.asset('assets/images/LogoBlack.png'),
                 ),
                 TextField(
                   onChanged: (text) { username = text; },
@@ -38,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
                     border: OutlineInputBorder()
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 TextField(
                   onChanged: (text) { password = text; },
                   obscureText: true,
@@ -47,24 +48,28 @@ class _LoginPageState extends State<LoginPage> {
                       border: OutlineInputBorder()
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 SizedBox(
                     width: double.infinity,
+                    height: 44,
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.of(context).pushNamed('/menu');
                       },
-                      child: Text('Entrar'),
+                      child: Text('Entrar', style: globals.txtStyle1),
+                      style: globals.btnStyle1,
                     )
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 SizedBox(
                     width: double.infinity,
+                    height: 44,
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.of(context).pushNamed('/register');
                       },
-                      child: Text('Cadastrar'),
+                      child: Text('Cadastrar', style: globals.txtStyle1),
+                      style: globals.btnStyle1,
                     )
                 ),
               ],

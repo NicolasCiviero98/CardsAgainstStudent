@@ -5,9 +5,10 @@ import 'menu_page.dart';
 import 'new_match_page.dart';
 import 'register_page.dart';
 import 'edit_cards_page.dart';
-import 'match_page.dart';
 import 'new_card_page.dart';
 import 'statistics_page.dart';
+import 'match_pages/student_match_page.dart';
+import 'match_pages/teacher_match_page.dart';
 
 
 void main() {
@@ -33,9 +34,10 @@ class MyApp extends StatelessWidget {
         '/new_match': (context) => NewMatchPage(),
         '/register': (context) => RegisterPage(),
         '/edit_cards': (context) => EditCardsPage(),
-        '/match': (context) => MatchPage(),
         '/new_card': (context) => NewCardPage(),
         '/statistics': (context) => StatisticsPage(),
+        '/student_match': (context) => StudentMatchPage(),
+        '/teacher_match': (context) => TeacherMatchPage(),
       },
     );
   }
