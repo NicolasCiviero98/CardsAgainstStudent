@@ -32,8 +32,8 @@ class _MenuPageState extends State<MenuPage> {
                       width: double.infinity,
                       height: 44,
                       child:   ElevatedButton(
-                        onPressed: () { Navigator.of(context).pushNamed('/new_match'); },
-                        child: Text('Criar sala', style: globals.txtStyle1),
+                        onPressed: () { Navigator.of(context).pushNamed('/match_list'); },
+                        child: Text('Encontrar Sala', style: globals.txtStyle1),
                         style: globals.btnStyle1,
                       ),
                     ),

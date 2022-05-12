@@ -30,7 +30,7 @@ class _StudentMatchPageState extends State<StudentMatchPage> {
               child: Container(
                 child: Column(
                   children: [
-                    Expanded(flex: 1, child: SizedBox(),),
+                    const Expanded(flex: 1, child: SizedBox(),),
                     Stack(
                       children: <Widget>[
                         Image.asset('assets/images/BlackCard.png'),
@@ -46,7 +46,7 @@ class _StudentMatchPageState extends State<StudentMatchPage> {
                         ),
                       ],
                     ),
-                    Expanded(flex: 1, child: SizedBox(),),
+                    const Expanded(flex: 1, child: SizedBox(),),
                   ],
                 ),
               ),
@@ -103,7 +103,7 @@ class _StudentMatchPageState extends State<StudentMatchPage> {
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                              children: const [
                                 Text('Room #1', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
                                 Text('Player: Caio Rutka', style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18)),
                                 Text('Round Number: 1', style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18)),
@@ -111,7 +111,7 @@ class _StudentMatchPageState extends State<StudentMatchPage> {
                                 Text('Role: Student', style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18)),
                               ],
                             ),
-                            SizedBox(width: 8),
+                            const SizedBox(width: 8),
                           ]
                       ),
                       const SizedBox(height: 16),
@@ -126,12 +126,12 @@ class _StudentMatchPageState extends State<StudentMatchPage> {
                         ),
                       ),
                       Center(
-                        child: Text('${index+1} of 5', style: TextStyle(fontSize: 16),),
+                        child: Text('${index+1} of 5', style: const TextStyle(fontSize: 16),),
                       ),
                       const SizedBox(height: 16),
                       Row(
                           children: [
-                            SizedBox(width: 8),
+                            const SizedBox(width: 8),
                             TextButton(
                               onPressed:  () {
                                 setState(() {
@@ -140,9 +140,9 @@ class _StudentMatchPageState extends State<StudentMatchPage> {
                                   cardView.animateToPage(index, duration: const Duration( microseconds: 300000), curve: Curves.decelerate);
                                 });
                               },
-                              child: Icon(IconData(57490, fontFamily: 'MaterialIcons', matchTextDirection: true), color: Colors.black,),
+                              child: const Icon(IconData(57490, fontFamily: 'MaterialIcons', matchTextDirection: true), color: Colors.black,),
                             ),
-                            Expanded(
+                            const Expanded(
                               flex: 50,
                               child: SizedBox(),
                             ),
@@ -154,7 +154,7 @@ class _StudentMatchPageState extends State<StudentMatchPage> {
                                 style: globals.btnStyle1,
                               ),
                             ),
-                            Expanded(
+                            const Expanded(
                               flex: 50,
                               child: SizedBox(),
                             ),
@@ -166,14 +166,13 @@ class _StudentMatchPageState extends State<StudentMatchPage> {
                                   cardView.animateToPage(index, duration: const Duration( microseconds: 300000), curve: Curves.decelerate);
                                 });
                               },
-                              child: Icon(IconData(57499, fontFamily: 'MaterialIcons', matchTextDirection: true), color: Colors.black,),
+                              child: const Icon(IconData(57499, fontFamily: 'MaterialIcons', matchTextDirection: true), color: Colors.black,),
                             ),
-                            SizedBox(width: 8),
+                            const SizedBox(width: 8),
                           ]
                       ),
                     ],
                   )
-
               )
           ),
         ],

@@ -1,3 +1,5 @@
+import 'package:cards_against_student/widgets/card_list_item.dart';
+import 'package:cards_against_student/widgets/player_item.dart';
 import 'package:flutter/material.dart';
 
 class EditCardsPage extends StatefulWidget {
@@ -8,9 +10,11 @@ class EditCardsPage extends StatefulWidget {
 }
 
 class _EditCardsPageState extends State<EditCardsPage> {
+  bool black_selected = false;
   Color background = Colors.white;
   Color black_button_border = Colors.black;
   Color white_button_border = Colors.amber;
+  List<String> cards = ["Ânsia de vômito", "Gravidez na adolescência", "Brutalidade policial", "Uma festa de aniversário decepcionante", "Injeções hormonais", "Ânsia de vômito", "Gravidez na adolescência", "Brutalidade policial", "Uma festa de aniversário decepcionante", "Injeções hormonais", "Ânsia de vômito", "Gravidez na adolescência", "Brutalidade policial", "Uma festa de aniversário decepcionante", "Injeções hormonais", "Ânsia de vômito", "Gravidez na adolescência", "Brutalidade policial", "Uma festa de aniversário decepcionante", "Injeções hormonais"];
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +41,7 @@ class _EditCardsPageState extends State<EditCardsPage> {
                                   child: ElevatedButton(
                                     onPressed: () {
                                       setState(() {
+                                        black_selected = true;
                                         background = Colors.black;
                                         black_button_border = Colors.amber;
                                         white_button_border = Colors.white;
@@ -61,6 +66,7 @@ class _EditCardsPageState extends State<EditCardsPage> {
                                   child: ElevatedButton(
                                     onPressed: () {
                                       setState(() {
+                                        black_selected = false;
                                         background = Colors.white;
                                         black_button_border = Colors.black;
                                         white_button_border = Colors.amber;
@@ -79,24 +85,24 @@ class _EditCardsPageState extends State<EditCardsPage> {
                     const SizedBox(height: 10),
                     Expanded(
                       flex: 1,
-                      child: DecoratedBox(
-                          child: SizedBox(
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Container(
+                            height: 48,
                             width: double.infinity,
+                            color:Color.fromARGB(40, 125, 125, 125),
                             child: Padding(
-                              padding: const EdgeInsets.all(16),
+                              padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
                               child: ListView(
-                                children: [
-                                  SizedBox(width: 50, height:100, child: DecoratedBox(decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 2.5, style: BorderStyle.solid))),),
-                                  SizedBox(width: 50, height:100, child: DecoratedBox(decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 2.5, style: BorderStyle.solid))),),
-                                  SizedBox(width: 50, height:100, child: DecoratedBox(decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 2.5, style: BorderStyle.solid))),),
-                                  SizedBox(width: 50, height:100, child: DecoratedBox(decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 2.5, style: BorderStyle.solid))),),
-                                  SizedBox(width: 50, height:100, child: DecoratedBox(decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 2.5, style: BorderStyle.solid))),),
-                                  SizedBox(width: 50, height:100, child: DecoratedBox(decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 2.5, style: BorderStyle.solid))),),
-                                ],
-                              ),
+                                children: cards.map((text) => CardListItem(
+                                  content: text,
+                                  edit: () {},
+                                  delete: () {},
+                                  is_black: black_selected,
+                                )).toList(),
+                              )
                             ),
-                          ),
-                          decoration: BoxDecoration(border: Border.all(color: Colors.black, width: 2.5, style: BorderStyle.solid))
+                          )
                       ),
                     ),
                     SizedBox(height: 10),

@@ -1,7 +1,9 @@
+import 'package:cards_against_student/match_list_page.dart';
 import 'package:flutter/material.dart';
 
 import 'login_page.dart';
 import 'menu_page.dart';
+import 'match_list_page.dart';
 import 'new_match_page.dart';
 import 'register_page.dart';
 import 'edit_cards_page.dart';
@@ -31,6 +33,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login': (context) => LoginPage(),
         '/menu': (context) => MenuPage(),
+        '/match_list': (context) => MatchListPage(),
         '/new_match': (context) => NewMatchPage(),
         '/register': (context) => RegisterPage(),
         '/edit_cards': (context) => EditCardsPage(),
