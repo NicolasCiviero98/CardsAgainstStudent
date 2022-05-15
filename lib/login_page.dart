@@ -21,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   Future<String> login(String username, String pass) async {
     try {
       Response response = await post(
-          Uri.parse('http://192.168.0.12:3000/user/login'),
+          Uri.parse('http://192.168.0.11:3000/user/login'),
           body: {'username': username, 'password': pass});
 
       if (response.statusCode == 200) {
