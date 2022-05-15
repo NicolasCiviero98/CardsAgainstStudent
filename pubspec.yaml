@@ -1,4 +1,4 @@
-name: cards_against_student
+name: untitled7
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -42,6 +42,7 @@ dev_dependencies:
     sdk: flutter
   syncfusion_flutter_pdf: ^20.1.47-beta
   http: ^0.13.0-nullsafety.0
+  rflutter_alert: ^2.0.4
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

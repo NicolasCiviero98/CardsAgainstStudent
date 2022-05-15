@@ -1,5 +1,5 @@
-import 'package:cards_against_student/widgets/card_list_item.dart';
-import 'package:cards_against_student/widgets/player_item.dart';
+import 'widgets/card_list_item.dart';
+import 'widgets/player_item.dart';
 import 'package:flutter/material.dart';
 
 class EditCardsPage extends StatefulWidget {

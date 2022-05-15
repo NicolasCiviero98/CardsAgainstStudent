@@ -1,5 +1,5 @@
-import 'package:cards_against_student/login_page.dart';
-import 'package:cards_against_student/new_match_page.dart';
+import 'login_page.dart';
+import 'new_match_page.dart';
 import 'package:flutter/material.dart';
 import 'globals.dart' as globals;
 
@@ -13,8 +13,12 @@ class MenuPage extends StatefulWidget {
 class _MenuPageState extends State<MenuPage> {
   @override
   Widget build(BuildContext context) {
+    final arguments = (ModalRoute.of(context)?.settings.arguments ??
+        <String, dynamic>{}) as Map;
+    var username = arguments['username'];
+
     return Material(
-        child:SizedBox(
+        child: SizedBox(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
             child: Padding(
@@ -31,8 +35,14 @@ class _MenuPageState extends State<MenuPage> {
                     SizedBox(
                       width: double.infinity,
                       height: 44,
-                      child:   ElevatedButton(
-                        onPressed: () { Navigator.of(context).pushNamed('/match_list'); },
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            '/match_list',
+                            arguments: {'username': username},
+                          );
+                        },
                         child: Text('Encontrar Sala', style: globals.txtStyle1),
                         style: globals.btnStyle1,
                       ),
@@ -43,7 +53,11 @@ class _MenuPageState extends State<MenuPage> {
                       height: 44,
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.of(context).pushNamed('/statistics');
+                          Navigator.pushNamed(
+                            context,
+                            '/statistics',
+                            arguments: {'username': username},
+                          );
                         },
                         child: Text('Estatísticas', style: globals.txtStyle1),
                         style: globals.btnStyle1,
@@ -74,11 +88,6 @@ class _MenuPageState extends State<MenuPage> {
                       ),
                     ),
                   ],
-                )
-            )
-        )
-
-    );
+                ))));
   }
 }
-

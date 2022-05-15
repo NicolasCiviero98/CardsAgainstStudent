@@ -1,4 +1,4 @@
-import 'package:cards_against_student/post_model.dart';
+import 'post_model.dart';
 import 'package:flutter/material.dart';
 
 import 'globals.dart' as globals;
@@ -24,6 +24,10 @@ class _MatchListPageState extends State<MatchListPage> {
 
   @override
   Widget build(BuildContext context) {
+    final arguments = (ModalRoute.of(context)?.settings.arguments ??
+        <String, dynamic>{}) as Map;
+    var username = arguments['username'];
+
     return Material(
         child:SizedBox(
             width: MediaQuery.of(context).size.width,
@@ -53,7 +57,11 @@ class _MatchListPageState extends State<MatchListPage> {
                                     Card(
                                       child: GestureDetector(
                                           onTap: () {
-                                          Navigator.of(context).pushNamed('/new_match');
+                                            Navigator.pushNamed(
+                                              context,
+                                              '/new_match',
+                                              arguments: {'username': username},
+                                            );
                                           },
                                           child: SizedBox(
                                             height: 50,

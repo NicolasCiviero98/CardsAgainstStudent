@@ -1,4 +1,4 @@
-import 'package:cards_against_student/post_model.dart';
+import 'post_model.dart';
 import 'package:flutter/material.dart';
 
 import 'globals.dart' as globals;
