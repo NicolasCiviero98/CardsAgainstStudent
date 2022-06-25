@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 
 class PlayerItem extends StatelessWidget {
   final String username;
-  final Function delete;
-  PlayerItem({ required this.username, required this.delete });
+  PlayerItem({ required this.username});
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +19,7 @@ class PlayerItem extends StatelessWidget {
               ),
               SizedBox(
                 width: 30,
-                child: TextButton(
-                  onPressed: () { delete; },
-                  child: Text("X", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, decoration: TextDecoration.none, color: Colors.black, fontFamily: "Arial"),),
-                ),
+                child: Text("X", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, decoration: TextDecoration.none, color: Colors.black, fontFamily: "Arial"),),
               ),
             ],
           ),

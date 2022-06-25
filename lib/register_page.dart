@@ -15,6 +15,7 @@ class _RegisterPageState extends State<RegisterPage> {
   String username = '';
   String email = '';
   String password = '';
+  String passwordCheck = '';
 
   void register(String username, String pass) async {
     try {
@@ -29,7 +30,7 @@ class _RegisterPageState extends State<RegisterPage> {
           desc: "Novo Usuário Cadastrado!",
           buttons: [
             DialogButton(
-              child: Text(
+              child: const Text(
                 "Ok!",
                 style: TextStyle(color: Colors.white, fontSize: 20),
               ),
@@ -45,9 +46,9 @@ class _RegisterPageState extends State<RegisterPage> {
           desc: "Erro ao cadastrar usuário!",
           buttons: [
             DialogButton(
-              child: Text(
+              child: const Text(
                 "Ok!",
-                style: TextStyle(color: Colors.white, fontSize: 20),
+                style: const TextStyle(color: Colors.white, fontSize: 20),
               ),
               onPressed: () => Navigator.pop(context),
               width: 120,
@@ -73,36 +74,38 @@ class _RegisterPageState extends State<RegisterPage> {
                   children: [
                     TextField(
                       onChanged: (text) { username = text; },
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           labelText: 'Usuário',
                           border: OutlineInputBorder()
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     TextField(
                       onChanged: (text) { email = text; },
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           labelText: 'E-mail',
                           border: OutlineInputBorder()
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     TextField(
                       onChanged: (text) { password = text; },
-                      decoration: InputDecoration(
+                      obscureText: true,
+                      decoration: const InputDecoration(
                           labelText: 'Senha',
                           border: OutlineInputBorder()
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     TextField(
-                      onChanged: (text) { password = text; },
-                      decoration: InputDecoration(
+                      onChanged: (text) { passwordCheck = text; },
+                      obscureText: true,
+                      decoration: const InputDecoration(
                           labelText: 'Repetir senha',
                           border: OutlineInputBorder()
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                         children: [
                           Expanded(
@@ -113,12 +116,12 @@ class _RegisterPageState extends State<RegisterPage> {
                                 onPressed: () {
                                   Navigator.of(context).pushNamed('/login');
                                 },
-                                child: Text('Voltar', style: TextStyle(fontSize: 20)),
+                                child: const Text('Voltar', style: TextStyle(fontSize: 20)),
                                 style: ElevatedButton.styleFrom( primary: Colors.grey ),
                               ),
                             ),
                           ),
-                          SizedBox(width: 8),
+                          const SizedBox(width: 8),
                           Expanded(
                             flex: 50,
                             child: SizedBox(
@@ -128,7 +131,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   register(username, password);
                                   Navigator.of(context).pushNamed('/login');
                                 },
-                                child: Text('Cadastrar', style: TextStyle(fontSize: 20)),
+                                child: const Text('Cadastrar', style: TextStyle(fontSize: 20)),
                               ),
                             ),
                           ),

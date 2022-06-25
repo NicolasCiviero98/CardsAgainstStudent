@@ -1,9 +1,11 @@
 import 'post_model.dart';
 import 'package:flutter/material.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import 'globals.dart' as globals;
 import 'http_service.dart';
 import 'widgets/player_item.dart';
+import 'dart:io';
 
 class MatchListPage extends StatefulWidget {
   const MatchListPage({Key? key}) : super(key: key);
@@ -13,20 +15,45 @@ class MatchListPage extends StatefulWidget {
 }
 
 class _MatchListPageState extends State<MatchListPage> {
-  String addUsername = '';
-  List<String> rooms = ['Sala 1', 'Sala 2', 'Sala 3', 'Sala 4', 'Sala 5', 'Sala 6', 'Sala 7'];
+  List<String> rooms = [];
+  var username = '';
+
   final fieldText = TextEditingController();
 
-  void clearUsername() {
-    fieldText.clear();
-    addUsername = '';
+  @override
+  void initState() {
+    super.initState();
+    globals.socket ??= IO.io('http://10.0.2.2:3000',
+          IO.OptionBuilder().setTransports(['websocket']).build()
+      );
+
+    globals.socket!.on("connect", (_) { print('Connected'); });
+
+    globals.socket!.on("roomList", (roomsString) {
+      setState( () { rooms = roomsString.split(';');});
+    });
+
+    globals.socket!.on("joinSuccess", (data) {
+      Navigator.pushNamed( context, '/new_match',
+        arguments: {'players': data['players'], 'room': data['room']},
+      );
+    });
+
+    globals.socket!.on("roomUsers", (data) {
+      List users = data['users'].toList();
+      List<String> players = [];
+      users.forEach((var user) => players.add(user['username']));
+
+      Navigator.pushNamed( context, '/new_match',
+        arguments: {'players': players, 'room': users[0]['room']},
+      );
+    });
+
   }
 
   @override
   Widget build(BuildContext context) {
-    final arguments = (ModalRoute.of(context)?.settings.arguments ??
-        <String, dynamic>{}) as Map;
-    var username = arguments['username'];
+    if (rooms.isEmpty) { globals.socket!.emit('getRooms'); }
 
     return Material(
         child:SizedBox(
@@ -37,7 +64,7 @@ class _MatchListPageState extends State<MatchListPage> {
                 child: Column(
                   children: [
                     const SizedBox(height: 40),
-                    SizedBox(
+                    const SizedBox(
                       width: double.infinity,
                       child: Text(' Salas:', style: TextStyle(fontSize: 40)),
                     ),
@@ -52,34 +79,7 @@ class _MatchListPageState extends State<MatchListPage> {
                             color: Color.fromARGB(255, 230, 230, 230),
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-                              child: ListView(
-                                children: rooms.map((name) =>
-                                    Card(
-                                      child: GestureDetector(
-                                          onTap: () {
-                                            Navigator.pushNamed(
-                                              context,
-                                              '/new_match',
-                                              arguments: {'username': username},
-                                            );
-                                          },
-                                          child: SizedBox(
-                                            height: 50,
-                                            child: Padding(
-                                              padding: EdgeInsets.fromLTRB(12,0,6,0),
-                                              child: Row(
-                                                children: [
-                                                  Expanded(
-                                                    flex: 1,
-                                                    child: Text(name, style: TextStyle(fontSize: 20)),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          )
-                                      ),
-                                    )).toList(),
-                              )
+                              child: buildRoomsList()
                             ),
                           )
                       ),
@@ -94,7 +94,8 @@ class _MatchListPageState extends State<MatchListPage> {
                               height: 50,
                               child: ElevatedButton(
                                 onPressed: () {
-                                  Navigator.of(context).pushNamed('/menu');
+                                  Navigator.pop(context,true);
+                                  //Navigator.of(context).pushNamed('/menu');
                                 },
                                 child: Text('Voltar', style: TextStyle(fontSize: 20)),
                                 style: ElevatedButton.styleFrom(
@@ -117,5 +118,35 @@ class _MatchListPageState extends State<MatchListPage> {
         )
     );
   }
+
+  Widget buildRoomsList() => rooms.isEmpty ?
+    Center(child: CircularProgressIndicator()) :
+    ListView.builder(
+        itemCount: rooms.length,
+        itemBuilder: (context, index) {
+          final name = rooms[index];
+          return Card(
+            child: GestureDetector(
+                onTap: () {
+                  globals.socket!.emit('joinRoom', {'username': globals.username, 'room': name});
+                  //Navigator.pushNamed( context, '/new_match', arguments: {'username': username} );
+                },
+                child: SizedBox(
+                  height: 50,
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(12,0,6,0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Text(name, style: TextStyle(fontSize: 20)),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+            ),
+          );
+        });
 }
 

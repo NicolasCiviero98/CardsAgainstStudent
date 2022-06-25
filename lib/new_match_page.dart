@@ -1,9 +1,7 @@
-import 'post_model.dart';
 import 'package:flutter/material.dart';
 
 import 'globals.dart' as globals;
-import 'http_service.dart';
-import 'widgets/player_item.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class NewMatchPage extends StatefulWidget {
   const NewMatchPage({Key? key}) : super(key: key);
@@ -13,117 +11,36 @@ class NewMatchPage extends StatefulWidget {
 }
 
 class _NewMatchPageState extends State<NewMatchPage> {
-  String addUsername = '';
-  List<Widget> players = [];
+  List<String> players = [];
+  String currentRoom = '';
   final fieldText = TextEditingController();
 
-  void clearUsername() {
-    fieldText.clear();
-    addUsername = '';
-  }
+  @override
+  void initState() {
+    super.initState();
+    globals.socket ??= IO.io('http://10.0.2.2:3000',
+        IO.OptionBuilder().setTransports(['websocket']).build()
+    );
 
-  void addUserToListView1() {
-    setState(() {
-      int index = players.length;
-      players.add(
-        Container(
-          height: 52,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(4,0,4,0),
-            child: Column(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Container(
-                      height: 48,
-                      width: double.infinity,
-                      color: Color.fromARGB(255, 230, 230, 230),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Text(addUsername, style: TextStyle(fontSize: 20)),
-                            ),
-                            SizedBox(
-                              width: 30,
-                              child: TextButton(
-                                  onPressed: () { setState(() {
-                                    players.removeAt(index);
-                                  });},
-                                  child: Text("X", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, decoration: TextDecoration.none, color: Colors.black),),
-                              ),
-                            ),
-                          ],
-                        )
-                      )
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-      clearUsername();
+    globals.socket!.on("roomUsers", (data) {
+      List users = data['users'].toList();
+      players.clear();
+      users.forEach((var user) => players.add(user['username']));
     });
-  }
 
-  void addUserToListView2() {
-    setState(() {
-      int index = players.length;
-      players.add(
-        Container(
-          height: 52,
-          child: Card(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(12,0,6,0),
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Text(addUsername, style: TextStyle(fontSize: 20)),
-                  ),
-                  SizedBox(
-                    width: 30,
-                    child: TextButton(
-                      onPressed: () { setState(() {
-                        players.removeAt(index);
-                      });},
-                      child: Text("X", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, decoration: TextDecoration.none, color: Colors.black, fontFamily: "Arial"),),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      );
-      clearUsername();
+    globals.socket!.on("roundUpdate", (data) {
+      Navigator.pushNamed( context, '/match', arguments: data);
     });
-  }
 
-  void addUserToListView() {
-    if (addUsername == '') return;
-
-    setState(() {
-
-      HttpService.getPosts();
-
-      players.add(
-        PlayerItem(
-            username: addUsername,
-            delete: () {
-              setState(() { players.remove(this); });
-            }
-        )
-      );
-      clearUsername();
-    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final arguments = (ModalRoute.of(context)?.settings.arguments ??
+        <String, dynamic>{}) as Map;
+    players = arguments['players'];
+    currentRoom = arguments['room'];
+
     return Material(
         child:SizedBox(
           width: MediaQuery.of(context).size.width,
@@ -132,35 +49,12 @@ class _NewMatchPageState extends State<NewMatchPage> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                SizedBox(height: 40),
-                Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: SizedBox(
-                          height: 50,
-                          child: TextField(
-                            onChanged: (text) { addUsername = text; },
-                            decoration: InputDecoration( border: OutlineInputBorder()),
-                            style: TextStyle(fontSize: 20),
-                            controller: fieldText,
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 8),
-                      SizedBox(
-                        width: 48,
-                        height: 48,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            addUserToListView();
-                          },
-                          child: Text('+', style: TextStyle(fontSize: 40)),
-                        ),
-                      ),
-                    ]
+                const SizedBox(height: 40),
+                SizedBox(
+                  width: double.infinity,
+                  child: Text(currentRoom, style: TextStyle(fontSize: 40)),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Expanded(
                   flex: 1,
                   child: ClipRRect(
@@ -170,13 +64,8 @@ class _NewMatchPageState extends State<NewMatchPage> {
                         width: double.infinity,
                         color: Color.fromARGB(255, 230, 230, 230),
                         child: Padding(
-                            padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-                            child: ListView.builder(
-                              itemCount: players.length,
-                              itemBuilder: (context,index) {
-                                return players[index];
-                              },
-                            ),
+                          padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+                          child: buildPlayersList(),
                         ),
                     )
                   ),
@@ -190,9 +79,10 @@ class _NewMatchPageState extends State<NewMatchPage> {
                           height: 50,
                           child: ElevatedButton(
                             onPressed: () {
+                              globals.socket!.emit('leaveRoom');
                               Navigator.of(context).pushNamed('/menu');
                             },
-                            child: Text('Cancelar', style: TextStyle(fontSize: 20)),
+                            child: Text('Sair', style: TextStyle(fontSize: 20)),
                             style: ElevatedButton.styleFrom(
                               primary: Colors.grey,
                               onPrimary: Colors.black,
@@ -202,14 +92,15 @@ class _NewMatchPageState extends State<NewMatchPage> {
                           ),
                         ),
                       ),
-                      SizedBox(width: 8),
+                      const SizedBox(width: 8),
                       Expanded(
                         flex: 50,
                         child: SizedBox(
                           height: 50,
                           child: ElevatedButton(
                             onPressed: () {
-                              Navigator.of(context).pushNamed('/student_match');
+                              //Navigator.of(context).pushNamed('/student_match');
+                              globals.socket!.emit('roomStart');
                             },
                             child: Text('Iniciar', style: TextStyle(fontSize: 20)),
                             style: globals.btnStyle1,
@@ -225,5 +116,25 @@ class _NewMatchPageState extends State<NewMatchPage> {
         )
     );
   }
+
+  Widget buildPlayersList() =>
+  ListView.builder(
+      itemCount: players.length,
+      itemBuilder: (context, index) {
+        final name = players[index];
+        return Container(
+          height: 52,
+          child: Card(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(width: 12),
+                Text(name, style: TextStyle(fontSize: 20)),
+                Expanded(flex: 1, child: SizedBox(),)
+              ],
+            ),
+          ),
+        );
+      });
 }
 

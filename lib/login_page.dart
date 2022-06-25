@@ -75,6 +75,8 @@ class _LoginPageState extends State<LoginPage> {
                             height: 44,
                             child: ElevatedButton(
                               onPressed: () {
+                                Navigator.of(context).pushNamed('/menu'); //TODO remove
+                                globals.username = username; //TODO move to ACHOU
                                 login(username.toString(), password.toString())
                                     .then((value) {
                                   if (value == 'ACHOU') {
